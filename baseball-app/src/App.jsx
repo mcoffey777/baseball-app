@@ -9,7 +9,10 @@ function App() {
     <BrowserRouter>
       <div className="app">
         <header>
-          <h1>⚾ Team Manager</h1>
+          <div className="header-brand">
+  <img src="/src/assets/logo.png" alt="Diamond Disciples" className="logo-img" />
+  <h1>Diamond Disciples</h1>
+</div>
           <nav>
             <NavLink to="/" end>Roster</NavLink>
             <NavLink to="/lineup">Lineup</NavLink>
