@@ -10,7 +10,7 @@ function App() {
       <div className="app">
         <header>
           <div className="header-brand">
-  <img src="/src/assets/logo.png" alt="Diamond Disciples" className="logo-img" />
+  <img src="/logo.png" alt="Diamond Disciples" className="logo-img" />
   <h1>Diamond Disciples</h1>
 </div>
           <nav>
