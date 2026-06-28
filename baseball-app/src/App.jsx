@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import Roster from './pages/Roster'
 import Lineup from './pages/Lineup'
 import Schedule from './pages/Schedule'
+import GameCard from './pages/GameCard'
 import './App.css'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <NavLink to="/" end>Roster</NavLink>
             <NavLink to="/lineup">Lineup</NavLink>
             <NavLink to="/schedule">Schedule</NavLink>
+            <NavLink to="/gamecard">Game Card</NavLink>
           </nav>
         </header>
         <main>
@@ -24,6 +26,7 @@ function App() {
             <Route path="/" element={<Roster />} />
             <Route path="/lineup" element={<Lineup />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/gamecard" element={<GameCard />} />
           </Routes>
         </main>
       </div>

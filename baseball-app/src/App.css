@@ -11,7 +11,7 @@ body {
 }
 
 .app {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   min-height: 100vh;
 }
@@ -116,4 +116,198 @@ h2 {
   height: 50px;
   width: auto;
   object-fit: contain;
+}
+
+/* ── Game Card page ── */
+
+.gamecard-page {
+  width: 100%;
+}
+
+.gamecard-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gamecard-label {
+  font-weight: 600;
+  color: #1a365d;
+  white-space: nowrap;
+}
+
+.gamecard-game-select {
+  flex: 1;
+  min-width: 160px;
+  margin-bottom: 0;
+}
+
+.print-btn {
+  width: auto;
+  white-space: nowrap;
+}
+
+.gamecard-card {
+  overflow: hidden;
+}
+
+.gamecard-header {
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #1a365d;
+}
+
+.gamecard-header-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a365d;
+}
+
+.gamecard-header-sub {
+  font-size: 13px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.gamecard-scroll {
+  overflow-x: auto;
+}
+
+.gamecard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.gamecard-table th {
+  background: #1a365d;
+  color: white;
+  padding: 8px 6px;
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.gc-player-col { width: 36px; }
+.gc-name-col   { text-align: left !important; width: 130px; }
+.gc-inning-col { width: 72px; }
+
+.gamecard-table td {
+  padding: 5px 4px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.gc-num {
+  color: #888;
+  font-size: 12px;
+}
+
+.gc-name {
+  text-align: left !important;
+  font-weight: 500;
+  padding-left: 6px !important;
+}
+
+.gc-cell select {
+  width: 100%;
+  padding: 4px 2px;
+  font-size: 12px;
+  margin-bottom: 0;
+  text-align: center;
+  border-color: #cbd5e0;
+}
+
+.gamecard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.gamecard-table tr:nth-child(even) {
+  background: #f7fafc;
+}
+
+/* ── Print styles ── */
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.5in;
+  }
+
+  .no-print,
+  header,
+  nav {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .app {
+    max-width: 100%;
+  }
+
+  main {
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .gamecard-header {
+    border-bottom: 2px solid black;
+    margin-bottom: 10px;
+  }
+
+  .gamecard-header-title {
+    font-size: 18px;
+    color: black;
+  }
+
+  .gamecard-header-sub {
+    color: #333;
+  }
+
+  .gamecard-table {
+    font-size: 11px;
+  }
+
+  .gamecard-table th {
+    background: #1a365d !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 6px 4px;
+  }
+
+  .gamecard-table td {
+    border: 1px solid #999;
+    padding: 5px 3px;
+  }
+
+  .gamecard-table tr:nth-child(even) {
+    background: #f0f0f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .gc-cell select {
+    border: none;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    padding: 0;
+    cursor: default;
+    pointer-events: none;
+  }
 }
