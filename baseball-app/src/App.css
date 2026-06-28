@@ -104,15 +104,16 @@ h2 {
 
 .player-row:last-child {
   border-bottom: none;
+}
 
-  .header-brand {
+.header-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .logo-img {
-  width: 48px;
-  height: 48px;
+  height: 50px;
+  width: auto;
   object-fit: contain;
 }
