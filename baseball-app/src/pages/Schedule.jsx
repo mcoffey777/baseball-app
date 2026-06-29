@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { ref, push, onValue, remove } from 'firebase/database'
+import { formatTime } from '../utils'
 
 export default function Schedule() {
   const [games, setGames] = useState([])
@@ -71,7 +72,7 @@ export default function Schedule() {
               </span>
               <strong>{g.opponent}</strong>
               <br/>
-              <span style={{fontSize:13, color:'rgba(255,255,255,0.55)'}}>{g.date} {g.time && `@ ${g.time}`}</span>
+              <span style={{fontSize:13, color:'rgba(255,255,255,0.55)'}}>{g.date} {g.time && `@ ${formatTime(g.time)}`}</span>
             </div>
             <button className="btn-danger" onClick={() => deleteGame(g.id)}>Remove</button>
           </div>

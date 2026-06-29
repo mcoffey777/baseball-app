@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { ref, onValue, set } from 'firebase/database'
+import { formatTime } from '../utils'
 
 const POSITIONS = ['', 'P', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'Bench']
 const INNINGS = [1, 2, 3, 4, 5, 6]
@@ -84,7 +85,7 @@ export default function GameCard() {
           {selectedGameData && (
             <div className="gamecard-header-sub">
               {selectedGameData.date} · vs {selectedGameData.opponent}
-              {selectedGameData.time && ` @ ${selectedGameData.time}`}
+              {selectedGameData.time && ` @ ${formatTime(selectedGameData.time)}`}
             </div>
           )}
         </div>

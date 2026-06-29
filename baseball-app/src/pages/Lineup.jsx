@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { ref, onValue, set, push } from 'firebase/database'
+import { formatTime } from '../utils'
 import {
   DndContext,
   DragOverlay,
@@ -214,7 +215,7 @@ export default function Lineup() {
         {selectedGameData && (
           <div className="lu-game-meta">
             vs <strong>{selectedGameData.opponent}</strong>
-            <span> · {selectedGameData.date}{selectedGameData.time && ` @ ${selectedGameData.time}`}</span>
+            <span> · {selectedGameData.date}{selectedGameData.time && ` @ ${formatTime(selectedGameData.time)}`}</span>
           </div>
         )}
       </div>
@@ -238,7 +239,7 @@ export default function Lineup() {
               {selectedGameData && (
                 <div className="lu-print-sub">
                   vs {selectedGameData.opponent} · {selectedGameData.date}
-                  {selectedGameData.time && ` @ ${selectedGameData.time}`}
+                  {selectedGameData.time && ` @ ${formatTime(selectedGameData.time)}`}
                 </div>
               )}
             </div>
