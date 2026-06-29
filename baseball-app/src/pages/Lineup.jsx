@@ -72,7 +72,7 @@ export default function Lineup() {
   const [players, setPlayers] = useState([])
   const [games, setGames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
-  const [battingOrder, setBattingOrder] = useState(Array(9).fill(null))
+  const [battingOrder, setBattingOrder] = useState(Array(12).fill(null))
   const [positions, setPositions] = useState({})
   const [showNewGame, setShowNewGame] = useState(false)
   const [newOpponent, setNewOpponent] = useState('')
@@ -113,11 +113,11 @@ export default function Lineup() {
     if (!selectedGame) return
     const unsub = onValue(ref(db, `lineups/${selectedGame}`), snap => {
       const data = snap.val() || {}
-      const batting = Array(9).fill(null)
+      const batting = Array(12).fill(null)
       if (data.batting) {
         Object.entries(data.batting).forEach(([i, pid]) => {
           const idx = parseInt(i)
-          if (idx >= 0 && idx < 9) batting[idx] = pid
+          if (idx >= 0 && idx < 12) batting[idx] = pid
         })
       }
       setBattingOrder(batting)
