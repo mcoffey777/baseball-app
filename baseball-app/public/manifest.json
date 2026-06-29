@@ -1,0 +1,22 @@
+{
+  "name": "Diamond Disciples",
+  "short_name": "Diamond Disciples",
+  "description": "Diamond Disciples Baseball Team App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1f3c",
+  "theme_color": "#1a365d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
