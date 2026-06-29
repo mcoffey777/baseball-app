@@ -57,7 +57,7 @@ export default function Roster() {
             <button className="btn-danger" onClick={() => deletePlayer(p.id)}>Remove</button>
           </div>
         ))}
-        {players.length === 0 && <p style={{color:'#888'}}>No players yet. Add some above!</p>}
+        {players.length === 0 && <p style={{color:'rgba(255,255,255,0.45)'}}>No players yet. Add some above!</p>}
       </div>
     </div>
   )

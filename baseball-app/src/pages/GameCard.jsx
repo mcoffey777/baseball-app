@@ -90,7 +90,7 @@ export default function GameCard() {
         </div>
 
         {players.length === 0 ? (
-          <p style={{ color: '#888' }}>Add players on the Roster page first.</p>
+          <p style={{ color: 'rgba(255,255,255,0.45)' }}>Add players on the Roster page first.</p>
         ) : (
           <div className="gamecard-scroll">
             <table className="gamecard-table">

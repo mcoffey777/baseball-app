@@ -33,10 +33,10 @@ export default function Lineup() {
     <div>
       <div className="card">
         <h2>Game Lineup</h2>
-        {players.length === 0 && <p style={{color:'#888'}}>Add players on the Roster page first.</p>}
+        {players.length === 0 && <p style={{color:'rgba(255,255,255,0.45)'}}>Add players on the Roster page first.</p>}
         {players.map((p, i) => (
           <div className="player-row" key={p.id}>
-            <span style={{width: 24, color: '#888', fontSize: 13}}>{i + 1}.</span>
+            <span style={{width: 24, color: 'rgba(255,255,255,0.45)', fontSize: 13}}>{i + 1}.</span>
             <span style={{flex: 1}}>#{p.number} {p.name}</span>
             <select
               style={{width: 80, marginBottom: 0}}
@@ -51,7 +51,7 @@ export default function Lineup() {
             <input
               style={{width: 50, marginBottom: 0, marginLeft: 8, textAlign: 'center'}}
               type="number"
-              placeholder="Bat#"
+              placeholder="#"
               value={lineup[p.id]?.battingOrder || ''}
               onChange={e => updateLineup(p.id, 'battingOrder', e.target.value)}
             />

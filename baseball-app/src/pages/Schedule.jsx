@@ -62,16 +62,16 @@ export default function Schedule() {
 
       <div className="card">
         <h2>Schedule ({games.length})</h2>
-        {games.length === 0 && <p style={{color:'#888'}}>No events yet. Add one above!</p>}
+        {games.length === 0 && <p style={{color:'rgba(255,255,255,0.45)'}}>No events yet. Add one above!</p>}
         {games.map(g => (
           <div className="player-row" key={g.id}>
             <div>
-              <span style={{fontSize:12, background: g.type === 'game' ? '#1a365d' : '#2d6a4f', color:'white', padding:'2px 8px', borderRadius:4, marginRight:8}}>
+              <span style={{fontSize:11, background: g.type === 'game' ? '#C9A84C' : '#2d6a4f', color: g.type === 'game' ? '#1a365d' : 'white', fontWeight:700, padding:'2px 9px', borderRadius:999, marginRight:8, letterSpacing:'0.6px'}}>
                 {g.type === 'game' ? 'GAME' : 'PRACTICE'}
               </span>
               <strong>{g.opponent}</strong>
               <br/>
-              <span style={{fontSize:13, color:'#666'}}>{g.date} {g.time && `@ ${g.time}`}</span>
+              <span style={{fontSize:13, color:'rgba(255,255,255,0.55)'}}>{g.date} {g.time && `@ ${g.time}`}</span>
             </div>
             <button className="btn-danger" onClick={() => deleteGame(g.id)}>Remove</button>
           </div>
