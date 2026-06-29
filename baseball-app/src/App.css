@@ -345,6 +345,210 @@ h2 {
   background: rgba(0, 0, 0, 0.2);
 }
 
+/* ── Lineup page ── */
+
+.lu-controls-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.lu-game-select {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.btn-auto {
+  width: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lu-new-game-form {
+  margin-top: 12px;
+}
+
+.lu-game-meta {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.lu-game-meta strong {
+  color: var(--white);
+}
+
+/* Two columns */
+.lu-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+@media (max-width: 560px) {
+  .lu-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Batting slots */
+.batting-slot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  transition: background 0.1s, border-color 0.1s, opacity 0.1s;
+}
+
+.batting-slot--empty {
+  border-color: rgba(201, 168, 76, 0.3);
+  border-style: dashed;
+}
+
+.batting-slot--over {
+  background: rgba(201, 168, 76, 0.13);
+  border-color: var(--gold);
+  border-style: solid;
+}
+
+.batting-slot--source {
+  opacity: 0.4;
+}
+
+.slot-number {
+  font-family: 'Oswald', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold);
+  width: 18px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: var(--muted);
+  font-size: 16px;
+  padding: 4px 2px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.slot-player-name {
+  flex: 1;
+  font-size: 13px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slot-remove {
+  background: transparent !important;
+  color: var(--muted) !important;
+  width: auto !important;
+  font-size: 20px !important;
+  padding: 0 4px !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 300 !important;
+  flex-shrink: 0;
+}
+
+.slot-remove:hover {
+  background: transparent !important;
+  color: #e05050 !important;
+}
+
+.slot-picker {
+  flex: 1;
+  width: auto !important;
+  margin-bottom: 0 !important;
+  font-size: 12px;
+  min-width: 0;
+  padding: 5px 6px !important;
+}
+
+/* Floating drag overlay */
+.drag-overlay-card {
+  background: var(--navy-card);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7);
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: grabbing;
+}
+
+/* Position rows (right column) */
+.position-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 6px;
+  border-radius: 4px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+  min-height: 40px;
+}
+
+.position-row:last-child {
+  border-bottom: none;
+}
+
+.position-row--alt {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.position-bat-num {
+  font-family: 'Oswald', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  width: 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.position-name {
+  flex: 1;
+  font-size: 12px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.position-jersey {
+  color: var(--muted);
+}
+
+.position-select {
+  width: auto !important;
+  min-width: 58px;
+  margin-bottom: 0 !important;
+  padding: 5px 4px !important;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
 /* ── Print styles ── */
 @media print {
   @page {
