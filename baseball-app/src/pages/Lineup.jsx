@@ -178,7 +178,7 @@ export default function Lineup() {
   return (
     <div>
       {/* Game selector bar */}
-      <div className="card">
+      <div className="card no-print">
         <div className="lu-controls-row">
           <select
             className="lu-game-select"
@@ -231,8 +231,24 @@ export default function Lineup() {
       ) : (
         <div className="lu-columns">
           {/* Left — Batting Order */}
-          <div className="card">
-            <h2>Batting Order</h2>
+          <div className="card lu-batting-card">
+            {/* Shown only when printing */}
+            <div className="lu-print-header">
+              <div className="lu-print-title">Diamond Disciples</div>
+              {selectedGameData && (
+                <div className="lu-print-sub">
+                  vs {selectedGameData.opponent} · {selectedGameData.date}
+                  {selectedGameData.time && ` @ ${selectedGameData.time}`}
+                </div>
+              )}
+            </div>
+
+            <div className="lu-batting-header">
+              <h2>Batting Order</h2>
+              <button className="btn-auto lu-print-btn no-print" onClick={() => window.print()}>
+                Print
+              </button>
+            </div>
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -264,7 +280,7 @@ export default function Lineup() {
           </div>
 
           {/* Right — Field Positions */}
-          <div className="card">
+          <div className="card no-print">
             <h2>Positions</h2>
             {lineupPlayers.length === 0 ? (
               <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13 }}>
