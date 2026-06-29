@@ -11,6 +11,7 @@ export default function GameCard() {
   const [games, setGames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
   const [assignments, setAssignments] = useState({})
+  const [battingOrder, setBattingOrder] = useState([])
 
   useEffect(() => {
     onValue(ref(db, 'players'), (snapshot) => {
@@ -40,10 +41,26 @@ export default function GameCard() {
 
   useEffect(() => {
     if (!selectedGame) return
-    const unsub = onValue(ref(db, `gamecards/${selectedGame}`), (snapshot) => {
+
+    const unsubAssign = onValue(ref(db, `gamecards/${selectedGame}`), (snapshot) => {
       setAssignments(snapshot.val() || {})
     })
-    return unsub
+
+    const unsubLineup = onValue(ref(db, `lineups/${selectedGame}/batting`), (snapshot) => {
+      const data = snapshot.val()
+      if (data) {
+        const slots = Array(12).fill(null)
+        Object.entries(data).forEach(([i, pid]) => {
+          const idx = parseInt(i)
+          if (idx >= 0 && idx < 12) slots[idx] = pid
+        })
+        setBattingOrder(slots.filter(Boolean))
+      } else {
+        setBattingOrder([])
+      }
+    })
+
+    return () => { unsubAssign(); unsubLineup() }
   }, [selectedGame])
 
   const updateAssignment = (playerId, inning, position) => {
@@ -55,6 +72,14 @@ export default function GameCard() {
   }
 
   const selectedGameData = games.find(g => g.id === selectedGame)
+
+  // Players in batting order first, then any remaining players by jersey number
+  const sortedPlayers = battingOrder.length > 0
+    ? [
+        ...battingOrder.map(pid => players.find(p => p.id === pid)).filter(Boolean),
+        ...players.filter(p => !battingOrder.includes(p.id)),
+      ]
+    : players
 
   return (
     <div className="gamecard-page">
@@ -105,7 +130,7 @@ export default function GameCard() {
                 </tr>
               </thead>
               <tbody>
-                {players.map(p => (
+                {sortedPlayers.map(p => (
                   <tr key={p.id}>
                     <td className="gc-num">{p.number}</td>
                     <td className="gc-name">{p.name}</td>
