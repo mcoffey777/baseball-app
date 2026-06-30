@@ -169,6 +169,13 @@ export default function Lineup() {
   const createGame = () => {
     if (!newOpponent || !newDate) return
     const r = push(ref(db, 'games'), { opponent: newOpponent, date: newDate, type: 'game' })
+    // Pre-populate new game with the current game's batting order
+    const filledSlots = battingOrder.filter(Boolean)
+    if (filledSlots.length > 0) {
+      const batting = {}
+      battingOrder.forEach((pid, i) => { if (pid) batting[i] = pid })
+      set(ref(db, `lineups/${r.key}/batting`), batting)
+    }
     setSelectedGame(r.key)
     setShowNewGame(false)
     setNewOpponent('')
