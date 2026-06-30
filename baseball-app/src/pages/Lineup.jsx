@@ -235,7 +235,7 @@ export default function Lineup() {
           <div className="card lu-batting-card">
             {/* Shown only when printing */}
             <div className="lu-print-header">
-              <div className="lu-print-title">Diamond Disciples</div>
+              <div className="lu-print-title">Marauders</div>
               {selectedGameData && (
                 <div className="lu-print-sub">
                   vs {selectedGameData.opponent} · {selectedGameData.date}

@@ -4,7 +4,7 @@ import { ref, onValue, set } from 'firebase/database'
 import { formatTime } from '../utils'
 
 const POSITIONS = ['', 'P', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'Bench']
-const INNINGS = [1, 2, 3, 4, 5, 6]
+const INNINGS = [1, 2, 3, 4, 5]
 
 export default function GameCard() {
   const [players, setPlayers] = useState([])
@@ -71,6 +71,13 @@ export default function GameCard() {
     set(ref(db, `gamecards/${selectedGame}/${playerId}/i${inning}`), position)
   }
 
+  const getPosCellClass = (pos) => {
+    if (pos === 'P') return ' gc-pos-pitcher'
+    if (pos === 'C') return ' gc-pos-catcher'
+    if (pos === 'Bench') return ' gc-pos-bench'
+    return ''
+  }
+
   const selectedGameData = games.find(g => g.id === selectedGame)
 
   // Players in batting order first, then any remaining players by jersey number
@@ -106,7 +113,7 @@ export default function GameCard() {
 
       <div className="card gamecard-card">
         <div className="gamecard-header">
-          <div className="gamecard-header-title">Diamond Disciples</div>
+          <div className="gamecard-header-title">Marauders</div>
           {selectedGameData && (
             <div className="gamecard-header-sub">
               {selectedGameData.date} · vs {selectedGameData.opponent}
@@ -134,18 +141,33 @@ export default function GameCard() {
                   <tr key={p.id}>
                     <td className="gc-num">{p.number}</td>
                     <td className="gc-name">{p.name}</td>
-                    {INNINGS.map(i => (
-                      <td key={i} className="gc-cell">
-                        <select
-                          value={assignments[p.id]?.[`i${i}`] || ''}
-                          onChange={e => updateAssignment(p.id, i, e.target.value)}
-                        >
-                          {POSITIONS.map(pos => (
-                            <option key={pos} value={pos}>{pos || '—'}</option>
-                          ))}
-                        </select>
-                      </td>
-                    ))}
+                    {INNINGS.map(i => {
+                      const currentPos = assignments[p.id]?.[`i${i}`] || ''
+                      const usedInInning = new Set(
+                        sortedPlayers
+                          .filter(other => other.id !== p.id)
+                          .map(other => assignments[other.id]?.[`i${i}`] || '')
+                          .filter(pos => pos !== '' && pos !== 'Bench')
+                      )
+                      return (
+                        <td key={i} className={`gc-cell${getPosCellClass(currentPos)}`}>
+                          <select
+                            value={currentPos}
+                            onChange={e => updateAssignment(p.id, i, e.target.value)}
+                          >
+                            {POSITIONS.map(pos => (
+                              <option
+                                key={pos}
+                                value={pos}
+                                disabled={pos !== '' && pos !== 'Bench' && usedInInning.has(pos) && pos !== currentPos}
+                              >
+                                {pos || '—'}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      )
+                    })}
                   </tr>
                 ))}
               </tbody>

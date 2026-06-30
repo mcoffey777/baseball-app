@@ -11,8 +11,8 @@ function App() {
       <div className="app">
         <header>
           <div className="header-brand">
-  <img src="/logo.png" alt="Diamond Disciples" className="logo-img" />
-  <h1>Diamond Disciples</h1>
+  <img src="/logo.png" alt="Marauders" className="logo-img" />
+  <h1>Marauders</h1>
 </div>
           <nav>
             <NavLink to="/" end>Roster</NavLink>
