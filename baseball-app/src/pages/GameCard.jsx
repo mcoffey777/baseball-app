@@ -32,7 +32,11 @@ export default function GameCard() {
           .filter(g => g.type === 'game')
           .sort((a, b) => new Date(a.date) - new Date(b.date))
         setGames(list)
-        if (list.length > 0) setSelectedGame(prev => prev || list[0].id)
+        if (list.length > 0) setSelectedGame(prev => {
+          if (prev) return prev
+          const stored = sessionStorage.getItem('selectedGame')
+          return (stored && list.find(g => g.id === stored)) ? stored : list[0].id
+        })
       } else {
         setGames([])
       }
@@ -42,6 +46,7 @@ export default function GameCard() {
   useEffect(() => {
     if (!selectedGame) return
 
+    sessionStorage.setItem('selectedGame', selectedGame)
     // Clear previous game's data immediately so stale order never drives sortedPlayers
     setBattingOrder([])
     setAssignments({})

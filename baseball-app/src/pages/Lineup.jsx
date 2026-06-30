@@ -103,7 +103,11 @@ export default function Lineup() {
           .filter(g => g.type === 'game')
           .sort((a, b) => new Date(a.date) - new Date(b.date))
         setGames(list)
-        setSelectedGame(prev => prev || (list.length ? list[0].id : ''))
+        setSelectedGame(prev => {
+          if (prev) return prev
+          const stored = sessionStorage.getItem('selectedGame')
+          return (stored && list.find(g => g.id === stored)) ? stored : (list.length ? list[0].id : '')
+        })
       } else {
         setGames([])
       }
@@ -112,6 +116,7 @@ export default function Lineup() {
 
   useEffect(() => {
     if (!selectedGame) return
+    sessionStorage.setItem('selectedGame', selectedGame)
     const unsub = onValue(ref(db, `lineups/${selectedGame}`), snap => {
       const data = snap.val() || {}
       const batting = Array(12).fill(null)
