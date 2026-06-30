@@ -42,6 +42,10 @@ export default function GameCard() {
   useEffect(() => {
     if (!selectedGame) return
 
+    // Clear previous game's data immediately so stale order never drives sortedPlayers
+    setBattingOrder([])
+    setAssignments({})
+
     const unsubAssign = onValue(ref(db, `gamecards/${selectedGame}`), (snapshot) => {
       setAssignments(snapshot.val() || {})
     })
