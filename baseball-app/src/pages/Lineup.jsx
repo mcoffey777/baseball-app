@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
-import { ref, onValue, set, push } from 'firebase/database'
+import { ref, onValue, set, push, get } from 'firebase/database'
 import { formatTime } from '../utils'
+import { useAuth } from '../AuthContext'
 import {
   DndContext,
   DragOverlay,
@@ -33,9 +34,9 @@ function DragHandle({ slotIndex }) {
   )
 }
 
-function BattingSlot({ index, playerId, players, availablePlayers, onAssign, onRemove, isSource }) {
+function BattingSlot({ index, playerId, players, availablePlayers, onAssign, onRemove, isSource, editable }) {
   const player = players.find(p => p.id === playerId)
-  const { setNodeRef, isOver } = useDroppable({ id: index })
+  const { setNodeRef, isOver } = useDroppable({ id: index, disabled: !editable })
 
   const cls = [
     'batting-slot',
@@ -43,6 +44,15 @@ function BattingSlot({ index, playerId, players, availablePlayers, onAssign, onR
     isOver && !isSource && 'batting-slot--over',
     isSource && 'batting-slot--source',
   ].filter(Boolean).join(' ')
+
+  if (!editable) {
+    return (
+      <div className={cls}>
+        <span className="slot-number">{index + 1}</span>
+        <span className="slot-player-name">{player ? `#${player.number} ${player.name}` : '—'}</span>
+      </div>
+    )
+  }
 
   return (
     <div ref={setNodeRef} className={cls}>
@@ -70,6 +80,7 @@ function BattingSlot({ index, playerId, players, availablePlayers, onAssign, onR
 }
 
 export default function Lineup() {
+  const { user } = useAuth()
   const [players, setPlayers] = useState([])
   const [games, setGames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
@@ -166,17 +177,29 @@ export default function Lineup() {
     set(ref(db, `lineups/${selectedGame}/positions/${pid}`), pos || null)
   }
 
-  const createGame = () => {
+  const createGame = async () => {
     if (!newOpponent || !newDate) return
     const r = push(ref(db, 'games'), { opponent: newOpponent, date: newDate, type: 'game' })
-    // Pre-populate new game with the current game's batting order
+    const newKey = r.key
+
     const filledSlots = battingOrder.filter(Boolean)
     if (filledSlots.length > 0) {
       const batting = {}
       battingOrder.forEach((pid, i) => { if (pid) batting[i] = pid })
-      set(ref(db, `lineups/${r.key}/batting`), batting)
+      set(ref(db, `lineups/${newKey}/batting`), batting)
     }
-    setSelectedGame(r.key)
+
+    if (Object.keys(positions).length > 0) {
+      set(ref(db, `lineups/${newKey}/positions`), positions)
+    }
+
+    if (selectedGame) {
+      const gcSnap = await get(ref(db, `gamecards/${selectedGame}`))
+      const gcData = gcSnap.val()
+      if (gcData) set(ref(db, `gamecards/${newKey}`), gcData)
+    }
+
+    setSelectedGame(newKey)
     setShowNewGame(false)
     setNewOpponent('')
     setNewDate('')
@@ -203,12 +226,14 @@ export default function Lineup() {
               <option key={g.id} value={g.id}>{g.date} — vs {g.opponent}</option>
             ))}
           </select>
-          <button className="btn-auto" onClick={() => setShowNewGame(v => !v)}>
-            {showNewGame ? 'Cancel' : '+ New Game'}
-          </button>
+          {user && (
+            <button className="btn-auto" onClick={() => setShowNewGame(v => !v)}>
+              {showNewGame ? 'Cancel' : '+ New Game'}
+            </button>
+          )}
         </div>
 
-        {showNewGame && (
+        {user && showNewGame && (
           <div className="lu-new-game-form">
             <input
               placeholder="Opponent name"
@@ -279,6 +304,7 @@ export default function Lineup() {
                   onAssign={handleAssign}
                   onRemove={slot => handleAssign(slot, null)}
                   isSource={activeSlot === i}
+                  editable={!!user}
                 />
               ))}
               <DragOverlay dropAnimation={null}>
@@ -306,16 +332,20 @@ export default function Lineup() {
                   <span className="position-name">
                     <span className="position-jersey">#{player.number}</span> {player.name}
                   </span>
-                  <select
-                    className="position-select"
-                    value={positions[player.id] || ''}
-                    onChange={e => savePosition(player.id, e.target.value)}
-                  >
-                    <option value="">—</option>
-                    {POSITIONS.map(pos => (
-                      <option key={pos} value={pos}>{pos}</option>
-                    ))}
-                  </select>
+                  {user ? (
+                    <select
+                      className="position-select"
+                      value={positions[player.id] || ''}
+                      onChange={e => savePosition(player.id, e.target.value)}
+                    >
+                      <option value="">—</option>
+                      {POSITIONS.map(pos => (
+                        <option key={pos} value={pos}>{pos}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span className="position-readonly">{positions[player.id] || '—'}</span>
+                  )}
                 </div>
               ))
             )}
