@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
-import { ref, push, onValue, remove } from 'firebase/database'
+import { ref, push, onValue, remove, set } from 'firebase/database'
 import { parseRosterImport } from '../utils'
 
 export default function Roster() {
@@ -84,14 +84,15 @@ export default function Roster() {
     setImporting(true)
     try {
       const playersRef = ref(db, 'players')
-      await remove(playersRef)
+      const newData = {}
       for (const p of valid) {
-        // eslint-disable-next-line no-await-in-loop
-        await push(playersRef, {
+        const key = push(playersRef).key
+        newData[key] = {
           name: p.name.trim(),
           number: parseInt(p.number, 10) || 0
-        })
+        }
       }
+      await set(playersRef, newData)
       cancelImport()
     } finally {
       setImporting(false)
