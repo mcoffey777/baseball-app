@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { ref, onValue, set } from 'firebase/database'
 import { formatTime } from '../utils'
+import { useAuth } from '../AuthContext'
 
 const POSITIONS = ['', 'P', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'Bench']
 const INNINGS = [1, 2, 3, 4, 5]
 
 export default function GameCard() {
+  const { user } = useAuth()
   const [players, setPlayers] = useState([])
   const [games, setGames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
@@ -160,20 +162,24 @@ export default function GameCard() {
                       )
                       return (
                         <td key={i} className={`gc-cell${getPosCellClass(currentPos)}`}>
-                          <select
-                            value={currentPos}
-                            onChange={e => updateAssignment(p.id, i, e.target.value)}
-                          >
-                            {POSITIONS.map(pos => (
-                              <option
-                                key={pos}
-                                value={pos}
-                                disabled={pos !== '' && pos !== 'Bench' && usedInInning.has(pos) && pos !== currentPos}
-                              >
-                                {pos || '—'}
-                              </option>
-                            ))}
-                          </select>
+                          {user ? (
+                            <select
+                              value={currentPos}
+                              onChange={e => updateAssignment(p.id, i, e.target.value)}
+                            >
+                              {POSITIONS.map(pos => (
+                                <option
+                                  key={pos}
+                                  value={pos}
+                                  disabled={pos !== '' && pos !== 'Bench' && usedInInning.has(pos) && pos !== currentPos}
+                                >
+                                  {pos || '—'}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <span className="gc-pos-readonly">{currentPos || '—'}</span>
+                          )}
                         </td>
                       )
                     })}

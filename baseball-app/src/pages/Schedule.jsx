@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { ref, push, onValue, remove } from 'firebase/database'
 import { formatTime } from '../utils'
+import { useAuth } from '../AuthContext'
 
 export default function Schedule() {
+  const { user } = useAuth()
   const [games, setGames] = useState([])
   const [opponent, setOpponent] = useState('')
   const [date, setDate] = useState('')
@@ -37,6 +39,7 @@ export default function Schedule() {
 
   return (
     <div>
+      {user && (
       <div className="card">
         <h2>Add Event</h2>
         <select value={type} onChange={e => setType(e.target.value)}>
@@ -60,6 +63,7 @@ export default function Schedule() {
         />
         <button onClick={addGame}>Add to Schedule</button>
       </div>
+      )}
 
       <div className="card">
         <h2>Schedule ({games.length})</h2>
@@ -74,7 +78,7 @@ export default function Schedule() {
               <br/>
               <span style={{fontSize:13, color:'rgba(255,255,255,0.55)'}}>{g.date} {g.time && `@ ${formatTime(g.time)}`}</span>
             </div>
-            <button className="btn-danger" onClick={() => deleteGame(g.id)}>Remove</button>
+            {user && <button className="btn-danger" onClick={() => deleteGame(g.id)}>Remove</button>}
           </div>
         ))}
       </div>

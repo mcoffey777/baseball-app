@@ -39,13 +39,80 @@ header {
   padding: 14px 16px 0;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .header-brand {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   padding-bottom: 10px;
+}
+
+.header-brand-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Coach login ── */
+.coach-login {
+  flex-shrink: 0;
+}
+
+.coach-login-btn {
+  width: auto;
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+.coach-login--signed-in {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coach-login-status {
+  font-size: 11px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.coach-login-form {
+  position: absolute;
+  right: 16px;
+  top: 58px;
+  background: var(--navy-card);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 14px;
+  width: 220px;
+  z-index: 20;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+
+.coach-login-form input {
+  margin-bottom: 8px;
+}
+
+.coach-login-error {
+  color: #e57373;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.coach-login-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.coach-login-actions button {
+  flex: 1;
+  width: auto;
 }
 
 .logo-img {
@@ -666,6 +733,19 @@ h2 {
   padding: 5px 4px !important;
   font-size: 12px;
   flex-shrink: 0;
+}
+
+.position-readonly {
+  color: var(--muted);
+  font-size: 12px;
+  flex-shrink: 0;
+  min-width: 30px;
+  text-align: right;
+}
+
+.gc-pos-readonly {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 /* ── Print styles ── */

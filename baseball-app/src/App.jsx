@@ -3,6 +3,7 @@ import Roster from './pages/Roster'
 import Lineup from './pages/Lineup'
 import Schedule from './pages/Schedule'
 import GameCard from './pages/GameCard'
+import CoachLogin from './components/CoachLogin'
 import './App.css'
 
 function App() {
@@ -11,8 +12,11 @@ function App() {
       <div className="app">
         <header>
           <div className="header-brand">
-  <img src="/logo.png" alt="Marauders" className="logo-img" />
-  <h1>Marauders</h1>
+  <div className="header-brand-left">
+    <img src="/logo.png" alt="Marauders" className="logo-img" />
+    <h1>Marauders</h1>
+  </div>
+  <CoachLogin />
 </div>
           <nav>
             <NavLink to="/" end>Roster</NavLink>

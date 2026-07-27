@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { ref, push, onValue, remove } from 'firebase/database'
 import { parseRosterImport } from '../utils'
+import { useAuth } from '../AuthContext'
 
 export default function Roster() {
+  const { user } = useAuth()
   const [players, setPlayers] = useState([])
   const [name, setName] = useState('')
   const [number, setNumber] = useState('')
@@ -98,6 +100,7 @@ export default function Roster() {
 
   return (
     <div>
+      {user && (
       <div className="card">
         <h2>Add Player</h2>
         <input
@@ -113,7 +116,9 @@ export default function Roster() {
         />
         <button onClick={addPlayer}>Add Player</button>
       </div>
+      )}
 
+      {user && (
       <div className="card">
         <h2>Import Roster</h2>
         {!showImport && (
@@ -180,13 +185,14 @@ export default function Roster() {
           </>
         )}
       </div>
+      )}
 
       <div className="card">
         <h2>Roster ({players.length})</h2>
         {players.map(p => (
           <div className="player-row" key={p.id}>
             <span>#{p.number} — {p.name}</span>
-            <button className="btn-danger" onClick={() => deletePlayer(p.id)}>Remove</button>
+            {user && <button className="btn-danger" onClick={() => deletePlayer(p.id)}>Remove</button>}
           </div>
         ))}
         {players.length === 0 && <p style={{color:'rgba(255,255,255,0.45)'}}>No players yet. Add some above!</p>}
