@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
-import { ref, push, onValue, remove, set } from 'firebase/database'
+import { ref, push, onValue, remove } from 'firebase/database'
 import { parseRosterImport } from '../utils'
 
 export default function Roster() {
@@ -83,17 +83,14 @@ export default function Roster() {
     if (valid.length === 0) return
     setImporting(true)
     try {
-      const playersRef = ref(db, 'players')
-      const newData = {}
-      for (const p of valid) {
-        const key = push(playersRef).key
-        newData[key] = {
-          name: p.name.trim(),
-          number: parseInt(p.number, 10) || 0
-        }
-      }
-      await set(playersRef, newData)
+      await Promise.all(players.map(p => remove(ref(db, `players/${p.id}`))))
+      await Promise.all(valid.map(p => push(ref(db, 'players'), {
+        name: p.name.trim(),
+        number: parseInt(p.number, 10) || 0
+      })))
       cancelImport()
+    } catch (err) {
+      console.error('Import failed:', err)
     } finally {
       setImporting(false)
     }
